@@ -1,70 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!--动态天气-->
+    <com.xiaonuo.find.dynamicweather.DynamicWeatherView
+        android:id="@+id/homeFragment_dynamicWeatherView_dynamicWeatherView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp">
 
-        <!--地区TextView-->
-        <TextView
-            android:id="@+id/homeFragment_textView_region"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:clickable="true"
-            android:gravity="center"
-            android:padding="15dp"
-            android:text="湘潭-雨湖"
-            android:textSize="13sp" />
+        <!--刷新控件-->
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/main_swipeRefreshLayout_refreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/homeFragment_textView_updateTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="5dip"
-            android:gravity="center"
-            android:padding="15dp"
-            android:text="20:01 数据"
-            android:textSize="13sp" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/homeFragment_textView_temperature"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/homeFragment_textView_updateTime"
-            android:layout_centerHorizontal="true"
-            android:fontFamily="sans-serif-thin"
-            android:gravity="center"
-            android:text="20"
-            android:textSize="90sp"
-            android:textStyle="normal" />
+                <!--地区TextView-->
+                <TextView
+                    android:id="@+id/homeFragment_textView_region"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:padding="15dp"
+                    android:text="湘潭-雨湖"
+                    android:textSize="13sp" />
 
-        <TextView
-            android:id="@+id/homeFragment_textView_degree"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@id/homeFragment_textView_temperature"
-            android:layout_toRightOf="@id/homeFragment_textView_temperature"
-            android:fontFamily="sans-serif-thin"
-            android:text="°"
-            android:textSize="60sp"
-            android:textStyle="normal" />
+                <TextView
+                    android:id="@+id/homeFragment_textView_updateTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="5dip"
+                    android:gravity="center"
+                    android:padding="15dp"
+                    android:text="20:01 数据"
+                    android:textSize="13sp" />
 
-        <TextView
-            android:id="@+id/homeFragment_textView_typeAndRealFeel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/homeFragment_textView_temperature"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dip"
-            android:text="晴 | 体感 21°"
-            android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/homeFragment_textView_temperature"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/homeFragment_textView_updateTime"
+                    android:layout_centerHorizontal="true"
+                    android:fontFamily="sans-serif-thin"
+                    android:gravity="center"
+                    android:text="20"
+                    android:textSize="90sp"
+                    android:textStyle="normal" />
 
+                <TextView
+                    android:id="@+id/homeFragment_textView_degree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/homeFragment_textView_temperature"
+                    android:layout_toRightOf="@id/homeFragment_textView_temperature"
+                    android:fontFamily="sans-serif-thin"
+                    android:text="°"
+                    android:textSize="60sp"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/homeFragment_textView_typeAndRealFeel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/homeFragment_textView_temperature"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dip"
+                    android:text="晴 | 体感 21°"
+                    android:textSize="14sp" />
+
+
+            </RelativeLayout>
+
+        </android.support.v4.widget.SwipeRefreshLayout>
 
     </RelativeLayout>
-
-
-</RelativeLayout>
+</FrameLayout>

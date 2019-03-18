@@ -42,29 +42,4 @@ public class Constant {
      */
     public static final String LOCAL_DISTRICT = "Local_district";
 
-
-    /**
-     * message.what的值：MainActivity handler进行天气数据的更新
-     */
-    public static final int WHAT_UPDATE_WEATHER_DATA = 100;
-
-
-    /**
-     * message.what的值：HomeFragment handler进行天气TextView的更新
-     */
-    public static final int WHAT_UPDATE_WEATHER_TextView_DATA = 101;
-
-
-    /**
-     * HandlerCollection中MainActivityHandler的Key
-     */
-    public static final int MAINACTIVITY_HANDLER_KEY = 1000;
-
-
-    /**
-     * HandlerCollection中HomeFragmentHandler的Key
-     */
-    public static final int HOMEFRAGMENT_HANDLER_KEY = 1001;
-
-
 }

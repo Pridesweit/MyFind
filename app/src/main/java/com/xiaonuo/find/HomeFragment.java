@@ -1,8 +1,8 @@
 package com.xiaonuo.find;
 
 import android.os.Bundle;
-import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,16 +10,25 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.lljjcoder.Interface.OnCityItemClickListener;
 import com.lljjcoder.bean.CityBean;
 import com.lljjcoder.bean.DistrictBean;
 import com.lljjcoder.bean.ProvinceBean;
 import com.lljjcoder.citywheel.CityConfig;
 import com.lljjcoder.style.citypickerview.CityPickerView;
+import com.xiaonuo.find.dynamicweather.BaseDrawer;
+import com.xiaonuo.find.dynamicweather.DynamicWeatherView;
 import com.xiaonuo.find.utils.Constant;
-import com.xiaonuo.find.utils.HandlerCollection;
-import com.xiaonuo.find.utils.HomeFragmentHandler;
 import com.xiaonuo.find.utils.Utils;
+
+import java.util.List;
+
+import interfaces.heweather.com.interfacesmodule.bean.Lang;
+import interfaces.heweather.com.interfacesmodule.bean.Unit;
+import interfaces.heweather.com.interfacesmodule.bean.weather.now.Now;
+import interfaces.heweather.com.interfacesmodule.view.HeConfig;
+import interfaces.heweather.com.interfacesmodule.view.HeWeather;
 
 public class HomeFragment extends android.support.v4.app.Fragment {
 
@@ -40,45 +49,17 @@ public class HomeFragment extends android.support.v4.app.Fragment {
     private String TAG = "HomeFragment";
 
 
-    public void updateTextView() {
+    /**
+     * 刷新控件
+     */
+    private SwipeRefreshLayout refreshLayout;
 
 
-        String json = Utils.getString(getContext(), Constant.WEATHER_JSON_DATA, null);
-        if (json != null) {
+    /**
+     * 动态天气控件
+     */
+    private DynamicWeatherView weatherView;
 
-            //获取温度
-            int x = json.indexOf("tmp");
-            int y = json.indexOf(":", x);
-            int j = json.indexOf(",", x);
-            String temp = json.subSequence(y + 2, j - 1).toString();
-            TextView temperature = layout.findViewById(R.id.homeFragment_textView_temperature);
-            temperature.setText(temp);
-
-            //天气描述+体感温度
-            x = json.indexOf("cond_txt");
-            y = json.indexOf(":", x);
-            j = json.indexOf(",", x);
-            temp = json.subSequence(y + 2, j - 1).toString();
-            x = json.indexOf("fl");
-            y = json.indexOf(":", x);
-            j = json.indexOf(",", x);
-            temp = temp + " | 体感 " + json.subSequence(y + 2, j - 1).toString() + " °";
-            TextView typeAndRealFeel = layout.findViewById(R.id.homeFragment_textView_typeAndRealFeel);
-            typeAndRealFeel.setText(temp);
-
-
-            //获取刷新时间
-            x = json.indexOf("loc\"");
-            y = json.indexOf(":", x);
-            j = json.indexOf(",", x);
-            temp = json.subSequence(y + 2, j - 1).toString();
-            Log.e("aa", temp);
-            temp = temp.split(" ")[1];
-            TextView visibility = layout.findViewById(R.id.homeFragment_textView_updateTime);
-            visibility.setText(temp + " 数据");
-
-        }
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,8 +68,11 @@ public class HomeFragment extends android.support.v4.app.Fragment {
         //初始化城市选择
         initPickCity();
 
-        HomeFragmentHandler handler = new HomeFragmentHandler(this);
-        HandlerCollection.add(Constant.HOMEFRAGMENT_HANDLER_KEY, handler);
+        //和风天气初始化
+        HeConfig.init("HE1903161719101836", "d4ba6f275d6a450e8f619e94f8e9f785");
+
+        //设定免费端口
+        HeConfig.switchToFreeServerNode();
 
     }
 
@@ -96,13 +80,286 @@ public class HomeFragment extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         layout = inflater.inflate(R.layout.fragment_home, container, false);
 
-        updateTextView();
+        //获取动态天气控件
+        weatherView = layout.findViewById(R.id.homeFragment_dynamicWeatherView_dynamicWeatherView);
+
+        //更新温度，体感，天气描述 TextView的数据，数据来源（SP）
+        updateWeatherTextView();
+
+        //更新显示的地址（数据来源SP）
         updateRegionTextView();
+
         //初始化城市选择按钮
         initTouchPickCityButton();
 
+        //动态背景的初始化
+        initDynamicWeatherView();
+
+        //刷新控件的初始化
+        initSwipeRefreshLayout();
         return layout;
     }
+
+    /**
+     * 更新温度，体感，天气描述 TextView的数据
+     * 数据来源（SP）
+     */
+    public void updateWeatherTextView() {
+        String json = Utils.getString(getContext(), Constant.WEATHER_JSON_DATA, null);
+        if (json != null) {
+
+            //获取温度
+            int x = json.indexOf("tmp");
+            int y = json.indexOf(":", x);
+            int j = json.indexOf(",", x);
+            final String temp1 = json.subSequence(y + 2, j - 1).toString();
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    TextView temperature = layout.findViewById(R.id.homeFragment_textView_temperature);
+                    temperature.setText(temp1);
+                }
+            });
+
+
+            //天气描述+体感温度
+            x = json.indexOf("cond_txt");
+            y = json.indexOf(":", x);
+            j = json.indexOf(",", x);
+            String temp = json.subSequence(y + 2, j - 1).toString();
+            x = json.indexOf("fl");
+            y = json.indexOf(":", x);
+            j = json.indexOf(",", x);
+            final String temp2 = temp + " | 体感 " + json.subSequence(y + 2, j - 1).toString() + " °";
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    TextView typeAndRealFeel = layout.findViewById(R.id.homeFragment_textView_typeAndRealFeel);
+                    typeAndRealFeel.setText(temp2);
+                }
+            });
+
+
+            //获取刷新时间
+            x = json.indexOf("loc\"");
+            y = json.indexOf(":", x);
+            j = json.indexOf(",", x);
+            temp = json.subSequence(y + 2, j - 1).toString();
+            final String temp3 = temp.split(" ")[1];
+
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    TextView visibility = layout.findViewById(R.id.homeFragment_textView_updateTime);
+                    visibility.setText(temp3 + " 数据");
+                }
+            });
+        }
+    }
+
+
+    /**
+     * 刷新控件的初始化
+     * 设置颜色
+     * 设置刷新内容
+     * （1.获取和风天气的数据，Json存入SP）
+     */
+    private void initSwipeRefreshLayout() {
+        //获取刷新控件
+        refreshLayout = layout.findViewById(R.id.main_swipeRefreshLayout_refreshLayout);
+        //设定控件颜色（主题色）
+        refreshLayout.setColorSchemeResources(R.color.theme);
+
+        //设定刷新事件
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //更新sp天气数据
+                updateWeatherSP();
+            }
+        });
+
+
+    }
+
+    /**
+     * 获取和风天气数据
+     * 存入sp
+     * 更新sp天气数据
+     * 更新温度，体感，天气描述 TextView的数据
+     * 更新动态背景
+     */
+    public void updateWeatherSP() {
+
+        //获取刷新控件
+        refreshLayout = layout.findViewById(R.id.main_swipeRefreshLayout_refreshLayout);
+
+        //设定进入刷新状态
+        refreshLayout.setRefreshing(true);
+
+        //天气监听器
+        HeWeather.OnResultWeatherNowBeanListener onResultWeatherNowBeanListener = new HeWeather.OnResultWeatherNowBeanListener() {
+            /**
+             * 获取失败
+             * @param e :错误信息
+             */
+            @Override
+            public void onError(Throwable e) {
+                Log.d(TAG, "onError: ", e);
+
+                //开启UI更新线程
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //关闭刷新
+                        refreshLayout.setRefreshing(false);
+
+                        //吐司提示
+                        Toast.makeText(getContext(), "刷新失败", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+
+            /**
+             * 获取成功
+             * @param dataObject :获取的天气数据集合
+             */
+            @Override
+            public void onSuccess(List<Now> dataObject) {
+                final String json = new Gson().toJson(dataObject);
+                Log.d(TAG, "onSuccess: " + json);
+
+                //子线程操作大任务
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                        //开启UI更新线程
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                //关闭刷新
+                                refreshLayout.setRefreshing(false);
+
+                                //吐司提示
+                                Toast.makeText(getContext(), "刷新成功", Toast.LENGTH_LONG).show();
+                            }
+                        });
+
+                        //存入天气json
+                        Utils.putString(getContext(), Constant.WEATHER_JSON_DATA, json);
+
+                        //更新温度，体感，天气描述 TextView的数据
+                        updateWeatherTextView();
+
+                        //更新动态背景
+                        updateDynamicWeatherView();
+
+                    }
+                }).start();
+
+            }
+        };
+
+        //天气具体地址（区+城市）如雨湖,湘潭
+        //获取SP中的地区，不存在则使用默认地区
+        String district = Utils.getString(getContext(), Constant.LOCAL_DISTRICT, Constant.DEFAULT_DISTRICT);
+
+        //获取SP中的城市，不存在则使用默认城市
+        String city = Utils.getString(getContext(), Constant.LOCAL_CITY, Constant.DEFAULT_CITY);
+
+        String specificAddress = district + "," + city;
+
+        //获取天气
+        //指定区域城市，语言，默认单位（米，英尺）
+        HeWeather.getWeatherNow(getContext(), specificAddress, Lang.CHINESE_SIMPLIFIED, Unit.METRIC, onResultWeatherNowBeanListener);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        weatherView.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        weatherView.onResume();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        weatherView.onDestroy();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+    }
+
+    /**
+     * 动态背景的初始化
+     */
+    private void initDynamicWeatherView() {
+        // 更新动态背景 数据来源（SP）
+        updateDynamicWeatherView();
+    }
+
+    /**
+     * 更新动态背景
+     * 数据来源（SP）
+     */
+    public void updateDynamicWeatherView() {
+
+        //获取本地Json
+        String json = Utils.getString(getContext(), Constant.WEATHER_JSON_DATA, null);
+
+        if (json != null) {
+            //获取天气描述
+            int x = json.indexOf("cond_txt");
+            int y = json.indexOf(":", x);
+            int j = json.indexOf(",", x);
+            String temp = json.subSequence(y + 2, j - 1).toString();
+
+            //进行天气的设定
+            if (temp.contains("雨") && temp.contains("雪")) {
+                weatherView.setDrawerType(BaseDrawer.Type.RAIN_SNOW_D);
+            } else if (temp.contains("雨")) {
+                weatherView.setDrawerType(BaseDrawer.Type.RAIN_D);
+            } else if (temp.contains("雪")) {
+                weatherView.setDrawerType(BaseDrawer.Type.SNOW_D);
+            } else if (temp.contains("晴")) {
+                weatherView.setDrawerType(BaseDrawer.Type.CLEAR_D);
+            } else if (temp.contains("云")) {
+                weatherView.setDrawerType(BaseDrawer.Type.CLOUDY_D);
+            } else if (temp.contains("阴")) {
+                weatherView.setDrawerType(BaseDrawer.Type.OVERCAST_D);
+            } else if (temp.contains("雾")) {
+                weatherView.setDrawerType(BaseDrawer.Type.FOG_D);
+            } else if (temp.contains("霾")) {
+                weatherView.setDrawerType(BaseDrawer.Type.HAZE_D);
+            } else if (temp.contains("沙") || temp.contains("尘")) {
+                weatherView.setDrawerType(BaseDrawer.Type.SAND_D);
+            } else if (temp.contains("风")) {
+                weatherView.setDrawerType(BaseDrawer.Type.WIND_D);
+            } else {
+                weatherView.setDrawerType(BaseDrawer.Type.UNKNOWN_D);
+            }
+        } else {
+            weatherView.setDrawerType(BaseDrawer.Type.UNKNOWN_D);
+        }
+
+        //动态背景唤醒
+        weatherView.onResume();
+    }
+
 
     /**
      * 初始化城市选择按钮
@@ -115,9 +372,9 @@ public class HomeFragment extends android.support.v4.app.Fragment {
         region.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 //显示
                 mPicker.showCityPicker();
+
             }
         });
     }
@@ -228,11 +485,11 @@ public class HomeFragment extends android.support.v4.app.Fragment {
                 //吐司提示
                 Toast.makeText(getContext(), "设定成功", Toast.LENGTH_SHORT).show();
 
-                //更新显示的地址（数据来源SP）
+                //更新本机的地址（数据来源SP）
                 updateRegionTextView();
 
-                //更新天气数据
-                upDateWeatherData();
+                //更新天气
+                updateWeatherSP();
             }
 
             /**
@@ -245,27 +502,6 @@ public class HomeFragment extends android.support.v4.app.Fragment {
         });
     }
 
-    /**
-     * 更新天气数据
-     */
-    private void upDateWeatherData() {
-        //拉取和风天气的数据存入SP
-        upDateWeatherDataToSP();
-    }
-
-    /**
-     * 拉取和风天气的数据存入SP
-     */
-    private void upDateWeatherDataToSP() {
-        //获取实例信息
-        Message msg = Message.obtain();
-
-        //设置信息类型
-        msg.what = Constant.WHAT_UPDATE_WEATHER_DATA;
-
-        //发送消息至MainActivity
-        HandlerCollection.get(Constant.MAINACTIVITY_HANDLER_KEY).sendMessage(msg);
-    }
 
     /**
      * 更新显示的地址（数据来源SP）
