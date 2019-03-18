@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <!--动态天气-->
+    <com.xiaonuo.find.dynamicweather.DynamicWeatherView
+        android:id="@+id/main_dynamicWeatherView_dynamicWeatherView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+    <!--刷新控件-->
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/main_swipeRefreshLayout_refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!--包裹内部ViewPager和SpaceTabLayout-->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!--ViewPager-->
+            <android.support.v4.view.ViewPager
+                android:id="@+id/Main_viewPager_viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <!--底部TabLayout-->
+            <eu.long1.spacetablayout.SpaceTabLayout
+                android:id="@+id/main_spaceTabLayout_tabLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                app:button_color="@color/main_tabLayout_focus"
+                app:icon_one="@drawable/main_tablayout_iconhome"
+                app:icon_three="@drawable/main_tablayout_iconmy"
+                app:icon_two="@drawable/main_tablayout_iconfriend"
+
+                app:layout_behavior="eu.long1.spacetablayout.SpaceTabLayoutBehavior"
+                app:number_of_tabs="three"
+
+                app:starting_position="one"
+                app:tab_color="@color/main_tabLayout_background"
+                app:text_color="@color/main_tabLayout_textColor"
+                app:text_one="主页"
+                app:text_three="我的"
+                app:text_two="好友" />
+        </FrameLayout>
+
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
+</merge>
