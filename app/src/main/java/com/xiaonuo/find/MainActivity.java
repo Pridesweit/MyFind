@@ -152,6 +152,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private class MMAdapt extends FragmentPagerAdapter {
+        //内置fragments
         List<Fragment> fragments;
 
         public MMAdapt(FragmentManager fm, List<Fragment> fragments) {
@@ -159,11 +160,22 @@ public class MainActivity extends BaseActivity {
             this.fragments = fragments;
         }
 
+        /**
+         * 获取某个fragment
+         *
+         * @param i
+         * @return
+         */
         @Override
         public Fragment getItem(int i) {
             return fragments.get(i);
         }
 
+        /**
+         * 获取总数量
+         *
+         * @return
+         */
         @Override
         public int getCount() {
             return fragments.size();
