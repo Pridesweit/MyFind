@@ -26,7 +26,7 @@
             android:orientation="vertical">
 
             <net.lucode.hackware.magicindicator.MagicIndicator
-                android:id="@+id/magic_indicator6"
+                android:id="@+id/Main_Tablayout_mainButtom"
                 android:layout_width="wrap_content"
                 android:layout_height="45dp"
                 android:layout_alignParentBottom="true"

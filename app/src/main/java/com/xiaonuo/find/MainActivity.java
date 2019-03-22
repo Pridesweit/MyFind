@@ -9,14 +9,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 
-import com.jaeger.library.StatusBarUtil;
+import com.xiaonuo.find.ui.ScaleTransitionPagerTitleView;
 import com.xiaonuo.find.utils.BaseActivity;
 import com.xiaonuo.find.utils.Constant;
 
@@ -31,8 +26,6 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.Simple
 
 import java.util.ArrayList;
 import java.util.List;
-
-import eu.long1.spacetablayout.SpaceTabLayout;
 
 
 public class MainActivity extends BaseActivity {
@@ -82,24 +75,46 @@ public class MainActivity extends BaseActivity {
         //设置缓存页数
         viewPager.setOffscreenPageLimit(5);
 
-
+        //viewPager设置适配器
         viewPager.setAdapter(new MMAdapt(getSupportFragmentManager(), fragmentList));
 
-
         //tabLayout的初始化
-        initMagicIndicator6(fragmentList, viewPager);
+        initMagicIndicator(fragmentList, viewPager);
     }
 
-    private void initMagicIndicator6(final List<Fragment> fragmentList, final ViewPager viewPager) {
-        MagicIndicator magicIndicator = (MagicIndicator) findViewById(R.id.magic_indicator6);
+    /**
+     * 初始化TabLayout
+     *
+     * @param fragmentList :Fragment集合
+     * @param viewPager    :viewPager
+     */
+    private void initMagicIndicator(final List<Fragment> fragmentList, final ViewPager viewPager) {
+        //获取底栏
+        MagicIndicator magicIndicator = findViewById(R.id.Main_Tablayout_mainButtom);
+
+        //设置颜色
 //        magicIndicator.setBackgroundColor(Color.WHITE);
+
+        //字体类获取
         CommonNavigator commonNavigator = new CommonNavigator(this);
+
+        //设置适配器
         commonNavigator.setAdapter(new CommonNavigatorAdapter() {
+            /**
+             * 设置页面数量
+             * @return
+             */
             @Override
             public int getCount() {
                 return fragmentList.size();
             }
 
+            /**
+             * 设置字体
+             * @param context
+             * @param index
+             * @return
+             */
             @Override
             public IPagerTitleView getTitleView(Context context, final int index) {
                 SimplePagerTitleView simplePagerTitleView = new ScaleTransitionPagerTitleView(context);
@@ -116,6 +131,11 @@ public class MainActivity extends BaseActivity {
                 return simplePagerTitleView;
             }
 
+            /**
+             * 设置字体被选中
+             * @param context
+             * @return
+             */
             @Override
             public IPagerIndicator getIndicator(Context context) {
                 BezierPagerIndicator indicator = new BezierPagerIndicator(context);
@@ -123,7 +143,11 @@ public class MainActivity extends BaseActivity {
                 return indicator;
             }
         });
+
+        //设置适配器
         magicIndicator.setNavigator(commonNavigator);
+
+        //绑定viewPager和magicIndicator
         ViewPagerHelper.bind(magicIndicator, viewPager);
     }
 
