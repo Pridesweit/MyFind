@@ -73,13 +73,14 @@ public class MainActivity extends BaseActivity {
         ViewPager viewPager = findViewById(R.id.Main_viewPager_viewpager);
 
         //设置缓存页数
-        viewPager.setOffscreenPageLimit(5);
+        viewPager.setOffscreenPageLimit(fragmentList.size());
 
         //viewPager设置适配器
         viewPager.setAdapter(new MMAdapt(getSupportFragmentManager(), fragmentList));
 
         //tabLayout的初始化
         initMagicIndicator(fragmentList, viewPager);
+
     }
 
     /**
@@ -119,7 +120,7 @@ public class MainActivity extends BaseActivity {
             public IPagerTitleView getTitleView(Context context, final int index) {
                 SimplePagerTitleView simplePagerTitleView = new ScaleTransitionPagerTitleView(context);
                 simplePagerTitleView.setText(Constant.TITLES[index]);
-                simplePagerTitleView.setTextSize(18);
+                simplePagerTitleView.setTextSize(22);
                 simplePagerTitleView.setNormalColor(Color.GRAY);
                 simplePagerTitleView.setSelectedColor(Color.BLACK);
                 simplePagerTitleView.setOnClickListener(new View.OnClickListener() {
