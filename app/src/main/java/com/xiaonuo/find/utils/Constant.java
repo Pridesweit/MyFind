@@ -6,6 +6,11 @@ package com.xiaonuo.find.utils;
 
 public class Constant {
 
+    /**
+     * TabLayout的文字
+     */
+    public static final String[] TITLES = {"主页", "联系人", "我的"};
+
 
     /**
      * 定位默认区

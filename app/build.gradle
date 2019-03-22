@@ -33,8 +33,7 @@ dependencies {
     implementation 'eu.long1:spacetablayout:1.0.4'
     //城市定位
     implementation 'liji.library.dev:citypickerview:4.1.2'
-
-
     //任务栏透明化
     implementation 'com.jaeger.statusbarutil:library:1.4.0'
+    implementation project(':magicindicator')
 }

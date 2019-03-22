@@ -30,6 +30,7 @@ public class FriendFragment extends android.support.v4.app.Fragment {
         View inflate = inflater.inflate(R.layout.fragment_bbb, container, false);
 
 
+
         return inflate;
     }
 }

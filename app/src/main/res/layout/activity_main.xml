@@ -7,42 +7,33 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <!--包裹内部ViewPager和SpaceTabLayout-->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-
-        <!--包裹内部ViewPager和SpaceTabLayout-->
-        <FrameLayout
+        <!--ViewPager-->
+        <android.support.v4.view.ViewPager
+            android:id="@+id/Main_viewPager_viewpager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent" />
 
-            <!--ViewPager-->
-            <android.support.v4.view.ViewPager
-                android:id="@+id/Main_viewPager_viewpager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+        <!--底部TabLayout-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
-            <!--底部TabLayout-->
-            <eu.long1.spacetablayout.SpaceTabLayout
-                android:id="@+id/main_spaceTabLayout_tabLayout"
+            <net.lucode.hackware.magicindicator.MagicIndicator
+                android:id="@+id/magic_indicator6"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
+                android:layout_alignParentBottom="true"
+                android:background="@null" />
 
-                app:button_color="@color/main_tabLayout_focus"
-                app:icon_one="@drawable/main_tablayout_iconhome"
-                app:icon_three="@drawable/main_tablayout_iconmy"
-                app:icon_two="@drawable/main_tablayout_iconfriend"
-
-                app:layout_behavior="eu.long1.spacetablayout.SpaceTabLayoutBehavior"
-                app:number_of_tabs="three"
-
-                app:starting_position="one"
-                app:tab_color="@color/main_tabLayout_background"
-                app:text_color="@color/main_tabLayout_textColor"
-                app:text_one="主页"
-                app:text_three="我的"
-                app:text_two="好友" />
-        </FrameLayout>
-
-
+        </RelativeLayout>
+    </FrameLayout>
 
 
 </merge>
