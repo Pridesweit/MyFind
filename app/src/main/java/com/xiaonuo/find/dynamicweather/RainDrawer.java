@@ -127,7 +127,7 @@ public class RainDrawer extends BaseDrawer {
 			this.maxY = maxY;
 //			this.v0 = 0;//maxY * 0.1f;
 			this.v = speed * getRandom(0.9f, 1.1f);
-			final float maxTime = maxY / this.v;//  (float) Math.sqrt(2f * maxY / acceleration);//s = 0.5*a*t^2;
+			final float maxTime = maxY / this.v;//  (float) Math.sqrt(2f * maxY / acceleration);//s = 0.5*gradient_colour*t^2;
 			this.curTime = getRandom(0, maxTime);
 		}
 

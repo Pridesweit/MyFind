@@ -97,7 +97,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/a">
+                        android:background="@drawable/gradient_colour">
                         <!--菜单-->
                         <include layout="@layout/fragment_home_include_menu" />
 

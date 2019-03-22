@@ -153,7 +153,7 @@ public class DynamicWeatherView extends SurfaceView implements SurfaceHolder.Cal
 
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
-		// Tell the drawing thread that a surface is available.
+		// Tell the drawing thread that gradient_colour surface is available.
 		synchronized (mDrawThread) {
 			mDrawThread.mSurface = holder;
 			mDrawThread.notify();
@@ -196,7 +196,7 @@ public class DynamicWeatherView extends SurfaceView implements SurfaceHolder.Cal
 			while (true) {
 				// Log.i(TAG, "DrawThread run..");
 				// Synchronize with activity: block until the activity is ready
-				// and we have a surface; report whether we are active or
+				// and we have gradient_colour surface; report whether we are active or
 				// inactive
 				// at this point; exit thread when asked to quit.
 				synchronized (this) {
