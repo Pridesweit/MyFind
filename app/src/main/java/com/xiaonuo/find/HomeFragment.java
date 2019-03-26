@@ -376,23 +376,23 @@ public class HomeFragment extends android.support.v4.app.Fragment {
     public void onPause() {
         super.onPause();
 
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
                 weatherView.onPause();
-//            }
-//        }).start();
+            }
+        }).start();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
                 weatherView.onResume();
-//            }
-//        }).start();
+            }
+        }).start();
     }
 
     @Override
