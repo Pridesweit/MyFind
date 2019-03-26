@@ -125,12 +125,12 @@ public class HomeFragment extends android.support.v4.app.Fragment {
         layout.findViewById(R.id.homeFragment_imageBtn_openCamera).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                //记录当前时间，3秒内只能触发一次
                 long now = System.currentTimeMillis();
-                if(now-lastClickTime>3000){
-                    lastClickTime=now;
+                if (now - lastClickTime > 3000) {
+                    lastClickTime = now;
 
-
+                    //跳转二维码拍摄
                     Intent intent = new Intent(getActivity(), CaptureActivity.class);
                     /*ZxingConfig是配置类
                      *可以设置是否显示底部布局，闪光灯，相册，
@@ -138,16 +138,34 @@ public class HomeFragment extends android.support.v4.app.Fragment {
                      * 设置扫描框颜色等
                      * 也可以不传这个参数
                      * */
+                    //参数设定
                     ZxingConfig config = new ZxingConfig();
-                    config.setPlayBeep(true);//是否播放扫描声音 默认为true
-                    config.setShake(true);//是否震动  默认为true
-                    config.setDecodeBarCode(true);//是否扫描条形码 默认为true
-                    config.setReactColor(R.color.theme);//设置扫描框四个角的颜色 默认为白色
-                    config.setFrameLineColor(R.color.theme);//设置扫描框边框颜色 默认无色
-                    config.setScanLineColor(R.color.theme);//设置扫描线的颜色 默认白色
-                    config.setFullScreenScan(true);//是否全屏扫描  默认为true  设为false则只会在扫描框中扫描
+
+                    //是否播放扫描声音 默认为true
+                    config.setPlayBeep(true);
+
+                    //是否震动  默认为true
+                    config.setShake(true);
+
+                    //是否扫描条形码 默认为true
+                    config.setDecodeBarCode(true);
+
+                    //设置扫描框四个角的颜色 默认为白色
+                    config.setReactColor(R.color.theme);
+
+                    //设置扫描框边框颜色 默认无色
+                    config.setFrameLineColor(R.color.theme);
+
+                    //设置扫描线的颜色 默认白色
+                    config.setScanLineColor(R.color.theme);
+
+                    //是否全屏扫描  默认为true  设为false则只会在扫描框中扫描
+                    config.setFullScreenScan(true);
+
+                    //将配置信息附带发送
                     intent.putExtra(Constant.INTENT_ZXING_CONFIG, config);
 
+                    //开启
                     startActivityForResult(intent, REQUEST_CODE);
                 }
             }
@@ -167,10 +185,7 @@ public class HomeFragment extends android.support.v4.app.Fragment {
                 String content = data.getStringExtra(Constant.CODED_CONTENT);
                 if (!content.isEmpty()) {
                     Toast.makeText(getContext(), "扫描成功", Toast.LENGTH_SHORT).show();
-
-
-
-
+                    //TODo解析字符串是否合格
 
                 }
             }
@@ -359,20 +374,29 @@ public class HomeFragment extends android.support.v4.app.Fragment {
 
     @Override
     public void onPause() {
-        Log.e("aaaa", "onPause");
         super.onPause();
-        weatherView.onPause();
+
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+                weatherView.onPause();
+//            }
+//        }).start();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        weatherView.onResume();
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+                weatherView.onResume();
+//            }
+//        }).start();
     }
 
     @Override
     public void onDestroyView() {
-        Log.e("aaaa", "onPause");
         super.onDestroyView();
         weatherView.onDestroy();
     }

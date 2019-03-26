@@ -11,6 +11,8 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.View;
 
+import com.xiaonuo.find.dynamicweather.BaseDrawer;
+import com.xiaonuo.find.dynamicweather.DynamicWeatherView;
 import com.xiaonuo.find.ui.ScaleTransitionPagerTitleView;
 import com.xiaonuo.find.utils.BaseActivity;
 import com.xiaonuo.find.utils.Constant;
@@ -52,6 +54,7 @@ public class MainActivity extends BaseActivity {
 
         //初始化底部TabLayout
         initTabLayoyt(savedInstanceState);
+
     }
 
     /**
