@@ -12,21 +12,24 @@
         android:orientation="horizontal">
 
         <RelativeLayout
+
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1">
 
-            <ImageView
+            <ImageButton
+                android:background="@drawable/selector_register"
                 android:layout_centerHorizontal="true"
-                android:id="@+id/temp_1"
+                android:id="@+id/homeFragment_imageBtn_openCamera"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/s1" />
+                android:src="@drawable/homefragment_imagebtn_scan"/>
+
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/temp_1"
+                android:layout_below="@id/homeFragment_imageBtn_openCamera"
                 android:layout_centerHorizontal="true"
                 android:text="扫一扫" />
         </RelativeLayout>
@@ -41,7 +44,7 @@
                 android:id="@+id/temp_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/s1" />
+                android:src="@drawable/homefragment_imagebtn_scan" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -60,7 +63,7 @@
                 android:id="@+id/temp_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/s1" />
+                android:src="@drawable/homefragment_imagebtn_scan" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -80,7 +83,7 @@
                 android:id="@+id/temp_4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/s1" />
+                android:src="@drawable/homefragment_imagebtn_scan" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -92,6 +95,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:layout_marginTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/temp_5"
@@ -107,7 +111,7 @@
                 android:id="@+id/temp_6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/s1" />
+                android:src="@drawable/homefragment_imagebtn_scan" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -127,7 +131,7 @@
                 android:id="@+id/temp_7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/s1" />
+                android:src="@drawable/homefragment_imagebtn_scan" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -146,7 +150,7 @@
                 android:id="@+id/temp_8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/s1" />
+                android:src="@drawable/homefragment_imagebtn_scan" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -166,7 +170,7 @@
                 android:id="@+id/temp_9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/s1" />
+                android:src="@drawable/homefragment_imagebtn_scan" />
 
             <TextView
                 android:layout_width="wrap_content"

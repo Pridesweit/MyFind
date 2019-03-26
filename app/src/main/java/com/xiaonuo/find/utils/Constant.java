@@ -47,4 +47,12 @@ public class Constant {
      */
     public static final String LOCAL_DISTRICT = "Local_district";
 
+
+
+    /**
+     * 传递的zxingconfing
+     */
+    public static final String INTENT_ZXING_CONFIG = "zxingConfig";
+
+    public static final String CODED_CONTENT = "codedContent";
 }

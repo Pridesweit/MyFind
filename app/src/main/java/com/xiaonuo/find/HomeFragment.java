@@ -1,5 +1,6 @@
 package com.xiaonuo.find;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -17,10 +18,13 @@ import com.lljjcoder.bean.DistrictBean;
 import com.lljjcoder.bean.ProvinceBean;
 import com.lljjcoder.citywheel.CityConfig;
 import com.lljjcoder.style.citypickerview.CityPickerView;
+import com.wang.avi.AVLoadingIndicatorView;
 import com.xiaonuo.find.dynamicweather.BaseDrawer;
 import com.xiaonuo.find.dynamicweather.DynamicWeatherView;
 import com.xiaonuo.find.utils.Constant;
 import com.xiaonuo.find.utils.Utils;
+import com.yzq.zxinglibrary.android.CaptureActivity;
+import com.yzq.zxinglibrary.bean.ZxingConfig;
 
 import java.util.List;
 
@@ -30,8 +34,11 @@ import interfaces.heweather.com.interfacesmodule.bean.weather.now.Now;
 import interfaces.heweather.com.interfacesmodule.view.HeConfig;
 import interfaces.heweather.com.interfacesmodule.view.HeWeather;
 
+import static android.app.Activity.RESULT_OK;
+
 public class HomeFragment extends android.support.v4.app.Fragment {
 
+    private static final int REQUEST_CODE = 777;
     /**
      * 获取城市
      */
@@ -60,6 +67,11 @@ public class HomeFragment extends android.support.v4.app.Fragment {
      */
     private DynamicWeatherView weatherView;
 
+
+    /**
+     * 时间记录，防止多次点击
+     */
+    private long lastClickTime = 0;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -97,7 +109,72 @@ public class HomeFragment extends android.support.v4.app.Fragment {
 
         //刷新控件的初始化
         initSwipeRefreshLayout();
+
+
+        //扫一扫初始化
+        initOpenCamera();
+
         return layout;
+    }
+
+    /**
+     * 扫一扫初始化
+     * 初始化点击事件
+     */
+    private void initOpenCamera() {
+        layout.findViewById(R.id.homeFragment_imageBtn_openCamera).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                long now = System.currentTimeMillis();
+                if(now-lastClickTime>3000){
+                    lastClickTime=now;
+
+
+                    Intent intent = new Intent(getActivity(), CaptureActivity.class);
+                    /*ZxingConfig是配置类
+                     *可以设置是否显示底部布局，闪光灯，相册，
+                     * 是否播放提示音  震动
+                     * 设置扫描框颜色等
+                     * 也可以不传这个参数
+                     * */
+                    ZxingConfig config = new ZxingConfig();
+                    config.setPlayBeep(true);//是否播放扫描声音 默认为true
+                    config.setShake(true);//是否震动  默认为true
+                    config.setDecodeBarCode(true);//是否扫描条形码 默认为true
+                    config.setReactColor(R.color.theme);//设置扫描框四个角的颜色 默认为白色
+                    config.setFrameLineColor(R.color.theme);//设置扫描框边框颜色 默认无色
+                    config.setScanLineColor(R.color.theme);//设置扫描线的颜色 默认白色
+                    config.setFullScreenScan(true);//是否全屏扫描  默认为true  设为false则只会在扫描框中扫描
+                    intent.putExtra(Constant.INTENT_ZXING_CONFIG, config);
+
+                    startActivityForResult(intent, REQUEST_CODE);
+                }
+            }
+
+
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // 扫描二维码/条码回传
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+            if (data != null) {
+
+                String content = data.getStringExtra(Constant.CODED_CONTENT);
+                if (!content.isEmpty()) {
+                    Toast.makeText(getContext(), "扫描成功", Toast.LENGTH_SHORT).show();
+
+
+
+
+
+                }
+            }
+        }
     }
 
     /**
@@ -282,6 +359,7 @@ public class HomeFragment extends android.support.v4.app.Fragment {
 
     @Override
     public void onPause() {
+        Log.e("aaaa", "onPause");
         super.onPause();
         weatherView.onPause();
     }
@@ -294,6 +372,7 @@ public class HomeFragment extends android.support.v4.app.Fragment {
 
     @Override
     public void onDestroyView() {
+        Log.e("aaaa", "onPause");
         super.onDestroyView();
         weatherView.onDestroy();
     }

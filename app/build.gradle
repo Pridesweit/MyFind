@@ -36,4 +36,8 @@ dependencies {
     //任务栏透明化
     implementation 'com.jaeger.statusbarutil:library:1.4.0'
     implementation project(':magicindicator')
+    implementation project(':zxinglibrary')
+
+    //加载中
+    implementation 'com.wang.avi:library:2.1.3'
 }
