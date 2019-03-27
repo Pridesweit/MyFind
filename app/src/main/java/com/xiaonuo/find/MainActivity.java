@@ -37,7 +37,6 @@ public class MainActivity extends BaseActivity {
      */
     public String TAG = "MainActivity";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

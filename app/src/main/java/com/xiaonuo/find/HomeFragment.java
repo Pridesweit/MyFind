@@ -1,7 +1,10 @@
 package com.xiaonuo.find;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -36,7 +39,33 @@ import interfaces.heweather.com.interfacesmodule.view.HeWeather;
 
 import static android.app.Activity.RESULT_OK;
 
+
 public class HomeFragment extends android.support.v4.app.Fragment {
+
+    private static final int showLoadView = 1;
+    private static final int goneLoadView = 2;
+
+    @SuppressLint("HandlerLeak")
+    public Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case showLoadView:
+                    AVLoadingIndicatorView loadView = layout.findViewById(R.id.homeFragment_aviLoading_loadView);
+                    loadView.show();
+                    TextView loadText = layout.findViewById(R.id.homeFragment_textView_loadText);
+                    loadText.setVisibility(View.VISIBLE);
+                    break;
+                case goneLoadView:
+                    AVLoadingIndicatorView loadView1 = layout.findViewById(R.id.homeFragment_aviLoading_loadView);
+                    loadView1.hide();
+                    TextView loadText1 = layout.findViewById(R.id.homeFragment_textView_loadText);
+                    loadText1.setVisibility(View.GONE);
+                    break;
+            }
+        }
+    };
+
 
     private static final int REQUEST_CODE = 777;
     /**
@@ -185,7 +214,28 @@ public class HomeFragment extends android.support.v4.app.Fragment {
                 String content = data.getStringExtra(Constant.CODED_CONTENT);
                 if (!content.isEmpty()) {
                     Toast.makeText(getContext(), "扫描成功", Toast.LENGTH_SHORT).show();
-                    //TODo解析字符串是否合格
+                    //解析字符串是否合格
+
+
+                    ///成功
+                    Message msg = Message.obtain();
+                    msg.what = showLoadView;
+                    handler.sendMessage(msg);
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Thread.sleep(3000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            Message msg = Message.obtain();
+                            msg.what = goneLoadView;
+                            handler.sendMessage(msg);
+                        }
+                    }).start();
+
 
                 }
             }

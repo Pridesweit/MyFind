@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <!--动态天气-->
     <com.xiaonuo.find.dynamicweather.DynamicWeatherView
@@ -17,14 +17,23 @@
         android:layout_marginTop="20dp">
 
         <com.wang.avi.AVLoadingIndicatorView
-            android:layout_centerInParent="true"
             android:id="@+id/homeFragment_aviLoading_loadView"
             style="@style/AVLoadingIndicatorView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:visibility="gone"
             app:indicatorColor="@color/theme"
             app:indicatorName="LineSpinFadeLoaderIndicator" />
+
+        <TextView
+            android:id="@+id/homeFragment_textView_loadText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/homeFragment_aviLoading_loadView"
+            android:layout_centerHorizontal="true"
+            android:text="加载中·"
+            android:visibility="gone" />
 
         <!--刷新控件-->
         <android.support.v4.widget.SwipeRefreshLayout
