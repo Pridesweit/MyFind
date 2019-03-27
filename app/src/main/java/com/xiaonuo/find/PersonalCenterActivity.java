@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -19,7 +20,10 @@ import com.vondear.rxtool.RxPhotoTool;
 import com.vondear.rxtool.RxSPTool;
 import com.vondear.rxui.view.dialog.RxDialogChooseImage;
 import com.vondear.rxui.view.dialog.RxDialogScaleView;
+import com.vondear.rxui.view.dialog.RxDialogSureCancel;
 import com.xiaonuo.find.utils.BaseActivity;
+import com.xiaonuo.find.utils.Constant;
+import com.xiaonuo.find.utils.Utils;
 import com.yalantis.ucrop.UCrop;
 import com.yalantis.ucrop.UCropActivity;
 
@@ -40,16 +44,45 @@ public class PersonalCenterActivity extends BaseActivity {
         setContentView(R.layout.activity_personalcenter);
 
         initView();
+
+        findViewById(R.id.btn_exit).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final RxDialogSureCancel rxDialogSureCancel = new RxDialogSureCancel(PersonalCenterActivity.this);
+                rxDialogSureCancel.getCancelView().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        rxDialogSureCancel.cancel();
+                    }
+                });
+                rxDialogSureCancel.getSureView().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        finish();
+                    }
+                });
+                rxDialogSureCancel.show();
+            }
+        });
     }
 
     private void initView() {
         Resources r = this.getResources();
-        resultUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"
-                + r.getResourcePackageName(R.drawable.circle_captcha) + "/"
-                + r.getResourceTypeName(R.drawable.circle_captcha) + "/"
-                + r.getResourceEntryName(R.drawable.circle_captcha));
-
         mIvAvatar = findViewById(R.id.iv_avatar);
+
+        String path = Utils.getString(getApplicationContext(), Constant.ICONPATH, "");
+
+        if (!path.equals("")) {
+            resultUri = Uri.parse(path);
+            roadImageView(resultUri, mIvAvatar);
+            RxSPTool.putContent(this, "AVATAR", resultUri.toString());
+        } else {
+            resultUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"
+                    + r.getResourcePackageName(R.drawable.circle_captcha) + "/"
+                    + r.getResourceTypeName(R.drawable.circle_captcha) + "/"
+                    + r.getResourceEntryName(R.drawable.circle_captcha));
+        }
+
 
         mIvAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,6 +145,10 @@ public class PersonalCenterActivity extends BaseActivity {
             case UCrop.REQUEST_CROP://UCrop裁剪之后的处理
                 if (resultCode == RESULT_OK) {
                     resultUri = UCrop.getOutput(data);
+
+                    Log.e("aaa","    "+resultUri);
+                    Utils.putString(getApplicationContext(), Constant.ICONPATH, resultUri.toString());
+
                     roadImageView(resultUri, mIvAvatar);
                     RxSPTool.putContent(this, "AVATAR", resultUri.toString());
                 } else if (resultCode == UCrop.RESULT_ERROR) {
@@ -187,5 +224,6 @@ public class PersonalCenterActivity extends BaseActivity {
                 .withOptions(options)
                 .start(this);
     }
+
 
 }

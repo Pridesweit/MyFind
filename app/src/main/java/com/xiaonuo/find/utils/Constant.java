@@ -53,6 +53,12 @@ public class Constant {
      * 传递的zxingconfing
      */
     public static final String INTENT_ZXING_CONFIG = "zxingConfig";
-
     public static final String CODED_CONTENT = "codedContent";
+
+
+    /**
+     * 头像本地路径
+     */
+    public static final String ICONPATH = "ICONPATH";
+
 }

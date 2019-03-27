@@ -15,11 +15,6 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary">
 
-        <TextView
-            android:id="@+id/tv_bg"
-            android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:background="@color/white" />
 
         <LinearLayout
             android:id="@+id/ll_anchor_left"
