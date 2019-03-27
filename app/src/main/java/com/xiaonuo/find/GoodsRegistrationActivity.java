@@ -1,27 +1,27 @@
 package com.xiaonuo.find;
 
-
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.net.Uri;
-import android.os.Bundle;
+import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.vondear.rxtool.RxPhotoTool;
 import com.vondear.rxtool.RxSPTool;
 import com.vondear.rxui.view.dialog.RxDialogChooseImage;
 import com.vondear.rxui.view.dialog.RxDialogScaleView;
-import com.vondear.rxui.view.dialog.RxDialogSureCancel;
-import com.xiaonuo.find.utils.BaseActivity;
 import com.xiaonuo.find.utils.Constant;
 import com.xiaonuo.find.utils.Utils;
 import com.yalantis.ucrop.UCrop;
@@ -34,54 +34,39 @@ import java.util.Locale;
 
 import static com.vondear.rxui.view.dialog.RxDialogChooseImage.LayoutType.TITLE;
 
-public class PersonalCenterActivity extends BaseActivity {
+public class GoodsRegistrationActivity extends AppCompatActivity {
     private ImageView mIvAvatar;
     private Uri resultUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_personalcenter);
+        setContentView(R.layout.activity_goods_registration);
 
-        initView();
+        //ActionBar隐藏，透明化任务栏
+        if (Build.VERSION.SDK_INT >= 21) {
+            View decorView = getWindow().getDecorView();
+            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+            decorView.setSystemUiVisibility(option);
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+        }
 
-        findViewById(R.id.btn_exit).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final RxDialogSureCancel rxDialogSureCancel = new RxDialogSureCancel(PersonalCenterActivity.this);
-                rxDialogSureCancel.getCancelView().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        rxDialogSureCancel.cancel();
-                    }
-                });
-                rxDialogSureCancel.getSureView().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        finish();
-                    }
-                });
-                rxDialogSureCancel.show();
-            }
-        });
+
+        initUpdateImageView();
     }
 
-    private void initView() {
+    /**
+     * 初始化上传照片
+     */
+    private void initUpdateImageView() {
         Resources r = this.getResources();
-        mIvAvatar = findViewById(R.id.iv_avatar);
+        mIvAvatar = findViewById(R.id.GoodsRegistrationActivity_imageView_goods_image);
 
-        String path = Utils.getString(getApplicationContext(), Constant.ICONPATH, "");
-
-        if (!path.equals("")) {
-            resultUri = Uri.parse(path);
-            roadImageView(resultUri, mIvAvatar);
-            RxSPTool.putContent(this, "AVATAR", resultUri.toString());
-        } else {
-            resultUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"
-                    + r.getResourcePackageName(R.drawable.circle_captcha) + "/"
-                    + r.getResourceTypeName(R.drawable.circle_captcha) + "/"
-                    + r.getResourceEntryName(R.drawable.circle_captcha));
-        }
+        resultUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"
+                + r.getResourcePackageName(R.drawable.goods_icon) + "/"
+                + r.getResourceTypeName(R.drawable.goods_icon) + "/"
+                + r.getResourceEntryName(R.drawable.goods_icon));
 
 
         mIvAvatar.setOnClickListener(new View.OnClickListener() {
@@ -94,8 +79,7 @@ public class PersonalCenterActivity extends BaseActivity {
         mIvAvatar.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-//                RxImageTool.showBigImageView(mContext, resultUri);
-                RxDialogScaleView rxDialogScaleView = new RxDialogScaleView(PersonalCenterActivity.this);
+                RxDialogScaleView rxDialogScaleView = new RxDialogScaleView(GoodsRegistrationActivity.this);
                 rxDialogScaleView.setImage(resultUri);
                 rxDialogScaleView.show();
                 return false;
@@ -128,9 +112,9 @@ public class PersonalCenterActivity extends BaseActivity {
                 break;
             case RxPhotoTool.CROP_IMAGE://普通裁剪后的处理
                 RequestOptions options = new RequestOptions()
-                        .placeholder(R.drawable.circle_captcha)
+                        .placeholder(R.drawable.goods_icon)
                         //异常占位图(当加载异常的时候出现的图片)
-                        .error(R.drawable.circle_captcha)
+                        .error(R.drawable.goods_icon)
                         //禁止Glide硬盘缓存缓存
                         .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
 
@@ -147,7 +131,7 @@ public class PersonalCenterActivity extends BaseActivity {
                     resultUri = UCrop.getOutput(data);
 
                     Log.e("aaa", "    " + resultUri);
-                    Utils.putString(getApplicationContext(), Constant.ICONPATH, resultUri.toString());
+//                    Utils.putString(getApplicationContext(), Constant.ICONPATH, resultUri.toString());
 
                     roadImageView(resultUri, mIvAvatar);
                     RxSPTool.putContent(this, "AVATAR", resultUri.toString());
@@ -167,10 +151,11 @@ public class PersonalCenterActivity extends BaseActivity {
     //从Uri中加载图片 并将其转化成File文件返回
     private File roadImageView(Uri uri, ImageView imageView) {
         RequestOptions options = new RequestOptions()
-                .placeholder(R.drawable.circle_captcha)
+                .placeholder(R.drawable.goods_icon)
                 //异常占位图(当加载异常的时候出现的图片)
-                .error(R.drawable.circle_captcha)
-                .transform(new CircleCrop())
+                .error(R.drawable.goods_icon)
+//                .transform(new CircleCrop())
+//                .transform(new CenterCrop())
                 //禁止Glide硬盘缓存缓存
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
 
@@ -224,6 +209,4 @@ public class PersonalCenterActivity extends BaseActivity {
                 .withOptions(options)
                 .start(this);
     }
-
-
 }

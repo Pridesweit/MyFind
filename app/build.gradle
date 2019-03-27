@@ -59,4 +59,7 @@ dependencies {
 
     //ArcGis For Android工具库（API：100.1以上版本）
     implementation "com.github.vondear.RxTool:RxArcGisKit:v2.2.7"
+
+    //button
+    implementation 'com.github.medyo:fancybuttons:1.9.1'
 }

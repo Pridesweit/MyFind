@@ -233,6 +233,11 @@ public class HomeFragment extends android.support.v4.app.Fragment {
                             Message msg = Message.obtain();
                             msg.what = goneLoadView;
                             handler.sendMessage(msg);
+
+                            Intent intent=new Intent(getContext(),GoodsRegistrationActivity.class);
+                            startActivity(intent);
+
+
                         }
                     }).start();
 
