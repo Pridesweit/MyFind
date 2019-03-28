@@ -1,20 +1,181 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_user"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="#fff7f7f7"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#F0F0F0"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <Button
-        android:textSize="20dp"
-        android:layout_marginTop="20dp"
-        android:id="@+id/aaaaaaaaaaaaaaaaa"
+    <RelativeLayout
+
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="个人中心"/>
+        android:layout_height="wrap_content">
 
+        <ImageView
+            android:id="@+id/h_back"
+            android:layout_width="match_parent"
+            android:layout_height="180dp" />
+
+        <ImageView
+
+            android:id="@+id/h_head"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/circle_bar_code"/>
+
+
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/h_back"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
+
+
+            <ImageView
+
+                android:id="@+id/ss"
+                android:layout_width="1dp"
+                android:layout_height="25dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="15dp"
+                android:background="@android:color/white" />
+
+
+
+            <TextView
+                android:id="@+id/shop_service"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="秋逸"
+                android:textColor="@android:color/white"
+                android:textSize="17sp" />
+
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#fff7f7f7">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+
+            <LinearLayout
+                android:id="@+id/me_user_order_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/white_quai_bg">
+                <RelativeLayout
+                    android:id="@+id/aaa"
+                    style="@style/me_common_item_relativeLayout_style">
+                    <ImageView
+                        android:id="@+id/shop_services"
+                        style="@style/me_common_item_icon_imageView_style"
+                        android:src="@mipmap/user_listicon_daifukuan"/>
+                    <TextView
+                        style="@style/me_common_item_title_textView_style"
+                        android:layout_toRightOf="@+id/shop_services"
+                        android:text="@string/shop_service"/>
+
+                </RelativeLayout>
+                <View
+                    style="@style/me_horizontal_view_style"/>
+                <RelativeLayout
+                    android:id="@+id/aaaaaaaaaaaaaaaaa"
+                    style="@style/me_common_item_relativeLayout_style">
+                    <ImageView
+                        android:id="@+id/personal"
+                        style="@style/me_common_item_icon_imageView_style"
+                        android:src="@mipmap/user_listicon_yifukuan"/>
+                    <TextView
+                        style="@style/me_common_item_title_textView_style"
+                        android:layout_toRightOf="@+id/personal"
+                        android:text="@string/personal_information"/>
+                </RelativeLayout>
+                <View
+                    style="@style/me_horizontal_view_style"/>
+                <RelativeLayout
+                    android:id="@+id/aaaaaaaaaa"
+                    style="@style/me_common_item_relativeLayout_style">
+                    <ImageView
+                        android:id="@+id/myicon"
+                        style="@style/me_common_item_icon_imageView_style"
+                        android:src="@mipmap/user_listicon_choujiang"/>
+                    <TextView
+                        style="@style/me_common_item_title_textView_style"
+                        android:layout_toRightOf="@+id/myicon"
+                        android:text="@string/my_icon"/>
+                </RelativeLayout>
+                <View
+                    style="@style/me_horizontal_view_style"/>
+                <RelativeLayout
+                    android:id="@+id/me_item_treasure_layout"
+                    style="@style/me_common_item_relativeLayout_style">
+                    <ImageView
+                        android:id="@+id/my_pocket"
+                        style="@style/me_common_item_icon_imageView_style"
+                        android:src="@mipmap/user_generdisplay_img"/>
+                    <TextView
+                        style="@style/me_common_item_title_textView_style"
+                        android:layout_toRightOf="@+id/my_pocket"
+                        android:text="@string/My_pocket"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+
+
+
+            <RelativeLayout
+                android:id="@+id/me_item_recommend_layout"
+                style="@style/me_common_item_relativeLayout_style"
+                android:layout_marginTop="@dimen/me_item_common_layout_marginTop">
+                <ImageView
+                    android:id="@+id/about_us"
+                    style="@style/me_common_item_icon_imageView_style"
+                    android:src="@mipmap/user_listicon_tuijian"/>
+                <TextView
+                    style="@style/me_common_item_title_textView_style"
+                    android:layout_toRightOf="@+id/about_us"
+                    android:text="@string/about_us"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/me_item_qr_layout"
+                style="@style/me_common_item_relativeLayout_style"
+                android:layout_marginTop="@dimen/me_item_common_layout_marginTop">
+                <ImageView
+                    android:id="@+id/me_item_qr_iv_icon"
+                    style="@style/me_common_item_icon_imageView_style"
+                    android:src="@mipmap/nav_icon_scan_sel"/>
+                <TextView
+                    style="@style/me_common_item_title_textView_style"
+                    android:layout_toRightOf="@+id/me_item_qr_iv_icon"
+                    android:text="@string/fresh"/>
+                <ImageView
+                    android:id="@+id/me_item_qr_iv_arrow_right"
+                    style="@style/me_common_item_arrow_right_imageView_style"/>
+            </RelativeLayout>
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>
+
+
+

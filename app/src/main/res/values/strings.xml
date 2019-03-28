@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">寻迹</string>
+
+
+
+    <string name="shop_service">商家服务</string>
+    <string name="personal_information">个人信息</string>
+    <string name="my_icon">我的二维码</string>
+    <string name="My_pocket">我的钱包</string>
+    <string name="about_us">关于寻迹</string>
+    <string name="fresh">扫一扫</string>
+
 </resources>
